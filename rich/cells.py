@@ -307,13 +307,13 @@ def set_cell_size(text: str, total: int, unicode_version: str = "auto") -> str:
     Returns:
         A string with cell size equal to total.
     """
+    if total <= 0:
+        return ""
     if _is_single_cell_widths(text):
         size = len(text)
         if size < total:
             return text + " " * (total - size)
         return text[:total]
-    if total <= 0:
-        return ""
     cell_size = cell_len(text)
     if cell_size == total:
         return text

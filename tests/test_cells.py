@@ -60,6 +60,17 @@ def test_set_cell_size():
     assert cells.set_cell_size("😽😽", 5) == "😽😽 "
 
 
+def test_set_cell_size_negative():
+    # A negative target width is out of range in both code paths and must
+    # yield an empty string. The single-cell (ASCII) fast path previously
+    # returned ``text[:total]`` which, for a negative ``total``, dropped only
+    # the trailing characters instead of all of them.
+    assert cells.set_cell_size("foo", -1) == ""
+    assert cells.set_cell_size("foo", -3) == ""
+    assert cells.set_cell_size("f", -1) == ""
+    assert cells.set_cell_size("😽😽", -1) == ""
+
+
 def test_set_cell_size_infinite():
     for size in range(38):
         assert (
